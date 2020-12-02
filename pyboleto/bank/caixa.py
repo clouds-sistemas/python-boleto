@@ -34,7 +34,7 @@ Agências da Caixa"
 
     @property
     def dv_nosso_numero(self):
-        numero = "%1s4%15s" % (self.carteira, self.nosso_numero.zfill(15))
+        numero = "%1s%15s" % (self.carteira, self.nosso_numero.zfill(15))
         return self.modulo11(numero)
 
     @property
@@ -44,15 +44,17 @@ Agências da Caixa"
             self.codigo_beneficiario,
             self.modulo11(self.codigo_beneficiario),
             nosso_numero_completo[2:5],
-            self.carteira,
+            self.carteira[0],
             nosso_numero_completo[5:8],
             '4',  # Beneficiário emite,
             nosso_numero_completo[8:17],
-            )
-        return "%s%s" % (content, self.modulo11(content))
+        )
+        content_dv = self.modulo11(content)
+        full_content = "%s%s" % (content, content_dv)
+        return full_content
 
     def format_nosso_numero(self):
-        content = "%1s4%15s-%1s" % (
+        content = "%1s%15s-%1s" % (
             self.carteira,
             self.nosso_numero.zfill(15),
             self.dv_nosso_numero,
